@@ -4,61 +4,48 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace CustomLocomotion
 {
-    public class ArmSwingLocomotion : LocomotionProvider
+    public class ArmSwingLocomotion : ContinuousMoveProviderBase
     {
-
-        [SerializeField] private Transform leftHand;
-        [SerializeField] private Transform rightHand;
         
         [SerializeField]
         private InputActionProperty leftHandPositionAction = new InputActionProperty(new InputAction("Left Hand Position", expectedControlType: "Vector3"));
         
         [SerializeField]
         private InputActionProperty rightHandPositionAction = new InputActionProperty(new InputAction("Right Hand Position", expectedControlType: "Vector3"));
+        
+        private float lastLeftHandYAxis;
+        private float lastRightHandYAxis;
 
-
-        private Rigidbody xrRigidBody;
-        private bool attemptedGetRigidBody;
+        private float deltaLeftHandYAxis;
+        private float deltaRightHandYAxis;
         
         private void Start()
         {
-            leftHandPositionAction.action.performed += ShootLeftHook;
-            rightHandPositionAction.action.performed += ShootRightHook;
-        }
-        
-        private void ShootLeftHook(InputAction.CallbackContext ctx)
-        {
-            FindRigidBody();
-            ShootRayCast(leftHand);
-        }
-        
-        private void ShootRightHook(InputAction.CallbackContext ctx)
-        {
-            FindRigidBody();
-            ShootRayCast(rightHand);
-        }
+            leftHandPositionAction.action.performed += MoveLeftHand;
+            rightHandPositionAction.action.performed += MoveRightHand;
 
-        private void ShootRayCast(Transform origin)
-        {
-            if (Physics.Raycast(origin.position, origin.TransformDirection(Vector3.forward), out RaycastHit hit,
-                    Mathf.Infinity, 1))
-            {
-                Vector3 direction = (hit.transform.position - xrRigidBody.position);
-                if (direction.y > 0)
-                {
-                    direction.y *= 5.0f;
-                }
-                xrRigidBody.AddForce(direction);
-            }
+            lastLeftHandYAxis = leftHandPositionAction.action.ReadValue<Vector3>().y;
+            lastRightHandYAxis = rightHandPositionAction.action.ReadValue<Vector3>().y;
         }
         
-        private void FindRigidBody()
+        private void MoveLeftHand(InputAction.CallbackContext ctx)
         {
-            var xrOrigin = system.xrOrigin?.Origin;
-            if (xrOrigin == null || xrRigidBody != null || attemptedGetRigidBody) return;
-            if (!xrOrigin.TryGetComponent(out xrRigidBody) && xrOrigin != system.xrOrigin.gameObject)
-                system.xrOrigin.TryGetComponent(out xrRigidBody);
-            attemptedGetRigidBody = true;
+            float position = ctx.ReadValue<Vector3>().y;
+            deltaLeftHandYAxis =  position - lastLeftHandYAxis;
+            lastLeftHandYAxis = position;
+            print(position);
+        }
+        
+        private void MoveRightHand(InputAction.CallbackContext ctx)
+        {
+            float position = ctx.ReadValue<Vector3>().y;
+            deltaRightHandYAxis =  position - lastRightHandYAxis;
+            lastRightHandYAxis = position;
+        }
+        
+        protected override Vector2 ReadInput()
+        {
+            return new Vector2(0,Mathf.Abs(deltaLeftHandYAxis) + Mathf.Abs(deltaRightHandYAxis));
         }
     }
 }
