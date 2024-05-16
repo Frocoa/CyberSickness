@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace CustomLocomotion
@@ -12,10 +13,12 @@ namespace CustomLocomotion
         [SerializeField] private Transform rightHand;
         
         [SerializeField]
-        private InputActionProperty leftHandTriggerAction = new InputActionProperty(new InputAction("Left Hand Trigger", expectedControlType: "Button"));
+        private InputActionProperty leftHandTriggerAction = new(new InputAction("Left Hand Trigger", expectedControlType: "Button"));
         
         [SerializeField]
-        private InputActionProperty rightHandTriggerAction = new InputActionProperty(new InputAction("Right Hand Trigger", expectedControlType: "Button"));
+        private InputActionProperty rightHandTriggerAction = new(new InputAction("Right Hand Trigger", expectedControlType: "Button"));
+
+        [SerializeField] private float strength;
 
 
         private Rigidbody xrRigidBody;
@@ -41,16 +44,17 @@ namespace CustomLocomotion
 
         private void ShootRayCast(Transform origin)
         {
-            if (Physics.Raycast(origin.position, origin.TransformDirection(Vector3.forward), out RaycastHit hit,
-                    Mathf.Infinity, 1))
+            if (!Physics.Raycast(origin.position, origin.TransformDirection(Vector3.forward), out RaycastHit hit,
+                    Mathf.Infinity, 1)) return;
+
+            xrRigidBody.velocity = new Vector3(0, xrRigidBody.velocity.y, 0);
+            
+            Vector3 direction = (hit.transform.position - xrRigidBody.position).normalized;
+            if (direction.y > 0)
             {
-                Vector3 direction = (hit.transform.position - xrRigidBody.position);
-                if (direction.y > 0)
-                {
-                    direction.y *= 5.0f;
-                }
-                xrRigidBody.AddForce(direction);
+                direction.y *= 3.0f;
             }
+            xrRigidBody.AddForce(direction * strength);
         }
         
         private void FindRigidBody()
