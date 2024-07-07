@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maze.unity
     guid: ef312e45e779c39428409a4df0adab45
+  - enabled: 1
+    path: Assets/Scenes/Track.unity
+    guid: ad764a636cca6674c9c7b30b1714b165
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a1c4443306bbf894688083231e11b948, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 662ef35e641b4434a8355c1f5071a38b, type: 2}

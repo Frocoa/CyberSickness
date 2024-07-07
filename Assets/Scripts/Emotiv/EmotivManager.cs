@@ -51,8 +51,8 @@ namespace Emotiv
         public void StartExperiment()
         {
             started = true;
-            //List<string> streamNames = new List<string> { DataStreamName.BandPower };
-            //emotivItf.SubscribeData(streamNames);
+            List<string> streamNames = new List<string> { DataStreamName.BandPower };
+            emotivItf.SubscribeData(streamNames);
         }
         
         public void UpdateBar(float value)
@@ -67,8 +67,6 @@ namespace Emotiv
 
             // Start
             emotivItf.Start();
-            List<string> streamNames = new List<string> { DataStreamName.BandPower };
-            emotivItf.UnSubscribeData(streamNames);
             
 
             if (!File.Exists(path))
@@ -89,7 +87,7 @@ namespace Emotiv
 
             if (emotivItf.IsAuthorizedOK && scanned && !alreadyAuthorized && !DataStreamManager.Instance.IsHeadsetScanning)
             {
-                //emotivItf.CreateSessionWithHeadset("EPOCPLUS-4A2C12F5");
+                emotivItf.CreateSessionWithHeadset("EPOCPLUS-4A2C12F5");
                 alreadyAuthorized = true;
             }
             //if (emotivItf.IsSessionCreated && !alreadySubscribed)

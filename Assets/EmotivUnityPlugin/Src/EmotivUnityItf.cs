@@ -525,21 +525,21 @@ namespace EmotivUnityPlugin
         {
             string dataText = "pow data: ";
             foreach (var item in e) {
-                dataText += item.ToString() + ",";
+                dataText += item.ToString() + "|";
             }
             // print out data to console
             UnityEngine.Debug.Log(dataText);
+            EmotivManager.Instance.WritePowerMeasure(dataText);
         }
 
         private void OnPerfDataReceived(object sender, ArrayList e)
         {
             string dataText = "met data: ";
             foreach (var item in e) {
-                dataText += item.ToString() + ",";
+                dataText += item.ToString() + "|";
             }
             // print out data to console
             UnityEngine.Debug.Log(dataText);
-            EmotivManager.Instance.WritePowerMeasure(dataText);
         }
 
         private void OnDevDataReceived(object sender, ArrayList e)

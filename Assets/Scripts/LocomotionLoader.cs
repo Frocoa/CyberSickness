@@ -17,11 +17,11 @@ public class LocomotionLoader : MonoBehaviour
         {
             case StateManager.LocomotionTechnique.Walk:
                 GetComponent<CustomContinuousMoveProvider>().enabled = true;
-                gameObject.AddComponent<CharacterController>();
+                GetComponent<CharacterController>().enabled = true;
                 break;
             case StateManager.LocomotionTechnique.Swing:
                 GetComponent<ArmSwingLocomotion>().enabled = true;
-                gameObject.AddComponent<CharacterController>();
+                GetComponent<CharacterController>().enabled = true;
                 break;
             case StateManager.LocomotionTechnique.Hook:
                 GetComponent<HookLocomotion>().enabled = true;

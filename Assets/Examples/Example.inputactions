@@ -1,0 +1,45 @@
+{
+    "name": "Example",
+    "maps": [
+        {
+            "name": "Movimiento",
+            "id": "0c528f80-9fa5-4569-97c2-65cdcaf364de",
+            "actions": [
+                {
+                    "name": "Salto",
+                    "type": "Button",
+                    "id": "48863a6b-f69b-4978-884c-419c1d8adf23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c65aece6-fd6b-4318-9e43-4450e4f9a176",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Salto",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac4dce5a-0ba3-4219-bd88-e40a2cebae6b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Salto",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

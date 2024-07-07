@@ -40,8 +40,6 @@ namespace CustomLocomotion
             
             leftHandPositionAction.action.performed += MoveLeftHand;
             rightHandPositionAction.action.performed += MoveRightHand;
-            breakAction.action.performed += (context => breaking = true);
-            breakAction.action.canceled += (context => breaking = false);
 
             lastLeftHandYAxis = leftHandPositionAction.action.ReadValue<Vector3>().y;
             lastRightHandYAxis = rightHandPositionAction.action.ReadValue<Vector3>().y;

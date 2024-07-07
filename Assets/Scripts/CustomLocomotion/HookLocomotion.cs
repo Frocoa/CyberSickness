@@ -23,11 +23,13 @@ namespace CustomLocomotion
 
         private Rigidbody xrRigidBody;
         private bool attemptedGetRigidBody;
+        private LayerMask wallLayer;
         
         private void Start()
         {
             leftHandTriggerAction.action.performed += ShootLeftHook;
             rightHandTriggerAction.action.performed += ShootRightHook;
+            wallLayer = LayerMask.GetMask("Wall");
         }
         
         private void ShootLeftHook(InputAction.CallbackContext ctx)
@@ -45,15 +47,15 @@ namespace CustomLocomotion
         private void ShootRayCast(Transform origin)
         {
             if (!Physics.Raycast(origin.position, origin.TransformDirection(Vector3.forward), out RaycastHit hit,
-                    Mathf.Infinity, 1)) return;
+                    Mathf.Infinity, wallLayer)) return;
 
             xrRigidBody.velocity = new Vector3(0, xrRigidBody.velocity.y, 0);
-            
             Vector3 direction = (hit.transform.position - xrRigidBody.position).normalized;
             if (direction.y > 0)
             {
-                direction.y *= 3.0f;
+                direction.y += 0.5f; // Little jump
             }
+
             xrRigidBody.AddForce(direction * strength);
         }
         
